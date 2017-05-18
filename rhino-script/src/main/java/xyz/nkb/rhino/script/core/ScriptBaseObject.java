@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.IdFunctionCall;
@@ -13,7 +15,6 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.annotations.JSGetter;
 import org.mozilla.javascript.annotations.JSSetter;
-import org.apache.log4j.Logger;
 
 import xyz.nkb.rhino.script.annotation.JavaScriptFunction;
 import xyz.nkb.rhino.script.annotation.JavaScriptScope;
@@ -24,7 +25,7 @@ public abstract class ScriptBaseObject extends ScriptableObject implements IdFun
 
 	static final int BUILTIN_PROPERTY = ScriptableObject.READONLY | ScriptableObject.PERMANENT;
 
-	protected final Logger logger = Logger.getLogger(this.getClass());
+	protected final Logger logger = LogManager.getLogger(this.getClass());
 	private final Map<Integer, Method> jsFuncMap = new HashMap<Integer, Method>();
 	private final Map<String, PropMethodPair> propFuncMap = new HashMap<String, PropMethodPair>();
 	

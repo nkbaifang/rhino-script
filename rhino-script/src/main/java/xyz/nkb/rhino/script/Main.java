@@ -1,10 +1,10 @@
 package xyz.nkb.rhino.script;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.mozilla.javascript.Context;
 
 import xyz.nkb.rhino.script.core.ModuleEnvironment;
@@ -20,7 +20,8 @@ public class Main {
 		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 		mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
 		
-		File dir = new File("D:\\Eclipse\\Workspace\\jee\\firstframe-script\\scripts");
+		File dir = new File(".\\src\\test\\scripts");
+		System.out.println(dir.getAbsolutePath());
 		ModuleEnvironment env = new ModuleEnvironment(dir.toURI().toURL());
 		
 		Object data = new String[] { "13", "14" };

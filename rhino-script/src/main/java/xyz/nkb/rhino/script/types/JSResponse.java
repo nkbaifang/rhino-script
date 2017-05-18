@@ -1,7 +1,8 @@
 package xyz.nkb.rhino.script.types;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.IdFunctionObject;
 import org.mozilla.javascript.IdScriptableObject;
@@ -10,7 +11,7 @@ import org.mozilla.javascript.Scriptable;
 
 public class JSResponse extends IdScriptableObject {
 	
-	private static final Logger logger = Logger.getLogger(JSResponse.class);
+	private static final Logger logger = LogManager.getLogger(JSResponse.class);
 
 	private static final long serialVersionUID = 7286799850333274071L;
 
