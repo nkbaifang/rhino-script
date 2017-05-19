@@ -9,7 +9,6 @@ import org.mozilla.javascript.annotations.JSGetter;
 
 import xyz.nkb.rhino.script.annotation.JavaScriptFunction;
 import xyz.nkb.rhino.script.annotation.JavaScriptScope;
-import xyz.nkb.rhino.script.types.JSResponse;
 import xyz.nkb.rhino.script.types.ScriptRequest;
 import xyz.nkb.rhino.script.types.ScriptResponse;
 import xyz.nkb.rhino.script.types.ScriptSystem;
@@ -46,7 +45,6 @@ public class GlobalProvider extends ScriptBaseObject {
 			} */
 			ScriptableObject.defineClass(scope, ScriptRequest.class, true);
 			ScriptableObject.defineClass(scope, ScriptResponse.class, true);
-			ScriptableObject.defineClass(scope, JSResponse.class, true);
 		} catch ( Exception ex ) {
 			ex.printStackTrace(System.err);
 			logger.error("Failed to define global classes.", ex);

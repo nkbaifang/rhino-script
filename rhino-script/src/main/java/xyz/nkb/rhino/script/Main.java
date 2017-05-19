@@ -8,8 +8,8 @@ import java.io.File;
 import org.mozilla.javascript.Context;
 
 import xyz.nkb.rhino.script.core.ModuleEnvironment;
-import xyz.nkb.rhino.script.types.JSResponse;
 import xyz.nkb.rhino.script.types.ScriptRequest;
+import xyz.nkb.rhino.script.types.ScriptResponse;
 
 public class Main {
 
@@ -32,7 +32,7 @@ public class Main {
 		try {
 			Object o = sr;//Context.javaToJS(sr, ctx.initSafeStandardObjects());
 			
-			JSResponse sp = (JSResponse) env.invokeModule("test", "show", new Object[]{ o });
+			ScriptResponse sp = (ScriptResponse) env.invokeModule("test", "show", new Object[]{ o });
 			String json = mapper.writeValueAsString(sp.getData());
 			System.out.println(sp.getStatus() + ": " + sp.getContentType());
 			System.out.println(json);
