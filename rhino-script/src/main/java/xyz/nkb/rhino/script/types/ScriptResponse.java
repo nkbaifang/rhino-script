@@ -11,6 +11,7 @@ import org.mozilla.javascript.Scriptable;
 
 public class ScriptResponse extends IdScriptableObject {
 	
+	public static final int STATUS_OK = 200;
 	public static final String CONTENT_TYPE_JSON = "application/json";
 	public static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
 	
@@ -20,7 +21,6 @@ public class ScriptResponse extends IdScriptableObject {
 	private static final String RSP_TAG = "Response";
 	
 	private static final int
-		ID_STATUS_OK = -2,
 		ID_constructor = 1,
 		ID_status = 2,
 		ID_contentType = 3,
@@ -30,7 +30,7 @@ public class ScriptResponse extends IdScriptableObject {
 	private static final AtomicInteger idg = new AtomicInteger(0);
 
 	private final int _id;
-	private int status = 200;
+	private int status = STATUS_OK;
 	private String contentType = CONTENT_TYPE_JSON;
 	private Object data;
 	
@@ -40,8 +40,18 @@ public class ScriptResponse extends IdScriptableObject {
 		ScriptResponse obj = new ScriptResponse();
 		obj.exportAsJSClass(MAX_ID, scope, sealed);
 	}
+	
 	private ScriptResponse() {
 		this._id = idg.getAndIncrement();
+	}
+
+	@Override
+	protected void fillConstructorProperties(IdFunctionObject ctor) {
+		super.fillConstructorProperties(ctor);
+		
+		ctor.defineProperty("STATUS_OK", ScriptRuntime.wrapInt(STATUS_OK), CONST);
+		ctor.defineProperty("CONTENT_TYPE_JSON", CONTENT_TYPE_JSON, CONST);
+		ctor.defineProperty("CONTENT_TYPE_FORM", CONTENT_TYPE_FORM, CONST);
 	}
 
 	@Override

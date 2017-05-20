@@ -1,23 +1,10 @@
 
 module.exports = {
-
-	_test_Object: function() {
-		var self = this;
-		
-		print('typeof Object=' + typeof Object);
-		print('typeof Object.prototype=' + typeof Object.prototype);
-		
-		var _proto = Object.prototype;
-		var _str = '\n';
-		for ( var i in _proto ) {
-			_str += i + ': ' + _proto[i] + '\n';
-		}
-		print(_str);
-		
-	},
 	
 	_test_Response: function() {
 		var self = this;
+		
+		print('Response.STATUS_OK=' + Response.STATUS_OK);
 	
 		var _obj1 = new Response(404);
 		print('typeof _obj1=' + typeof _obj1);
@@ -37,12 +24,7 @@ module.exports = {
 		
 		var self = this;
 		
-		return self._test_Response();
-		
-		
-		
-		print('count=' + JSResponse.count);
-		print(typeof JSResponse.constructor.STATUS_OK);
+		print('request.data=' + typeof request.data);
 		
 		var _rsp = new Response(200, 'application/json');
 		_rsp.data = {
