@@ -20,7 +20,7 @@ public class Main {
 		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 		mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
 		
-		File dir = new File(".\\src\\test\\scripts");
+		File dir = new File("./src/test/scripts");
 		System.out.println(dir.getAbsolutePath());
 		ModuleEnvironment env = new ModuleEnvironment(dir.toURI().toURL());
 		
