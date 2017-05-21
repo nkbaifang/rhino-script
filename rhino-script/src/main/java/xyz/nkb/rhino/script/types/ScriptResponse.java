@@ -11,11 +11,11 @@ import org.mozilla.javascript.Scriptable;
 
 public class ScriptResponse extends IdScriptableObject {
 	
+	private static final long serialVersionUID = 877561821772426518L;
+	
 	public static final int STATUS_OK = 200;
 	public static final String CONTENT_TYPE_JSON = "application/json";
 	public static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
-	
-	private static final long serialVersionUID = 877561821772426518L;
 	
 	private static final Logger logger = LogManager.getLogger(ScriptResponse.class);
 	private static final String RSP_TAG = "Response";
@@ -36,7 +36,7 @@ public class ScriptResponse extends IdScriptableObject {
 	
 	public static void init(Context ctx, Scriptable scope, boolean sealed) {
 		logger.info("init: scope=" + scope + ", sealed=" + sealed);
-
+		
 		ScriptResponse obj = new ScriptResponse();
 		obj.exportAsJSClass(MAX_ID, scope, sealed);
 	}
@@ -76,16 +76,19 @@ public class ScriptResponse extends IdScriptableObject {
 				break;
 			case ID_contentType:
 				name = "contentType";
-				value = this.contentType != null ? this.contentType : Context.getUndefinedValue();
+				value = this.contentType;
 				break;
 			case ID_data:
 				name = "data";
-				value = this.data != null ? this.data : Context.getUndefinedValue();
+				value = this.data;
 				break;
 			default:
 				throw new IllegalArgumentException("id=" + id);
 			}
 			
+			if ( value == null ) {
+				value = Context.getUndefinedValue();
+			}
 			this.initPrototypeValue(id, name, value, EMPTY);
 		}
 	}
