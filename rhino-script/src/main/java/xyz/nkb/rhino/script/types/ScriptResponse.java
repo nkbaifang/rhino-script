@@ -35,7 +35,7 @@ public class ScriptResponse extends IdScriptableObject {
 	private Object data;
 	
 	public static void init(Context ctx, Scriptable scope, boolean sealed) {
-		logger.info("init: scope=" + scope + ", sealed=" + sealed);
+		logger.debug("init: scope=" + scope + ", sealed=" + sealed);
 		
 		ScriptResponse obj = new ScriptResponse();
 		obj.exportAsJSClass(MAX_ID, scope, sealed);
@@ -61,7 +61,7 @@ public class ScriptResponse extends IdScriptableObject {
 	
 	@Override
 	protected void initPrototypeId(int id) {
-		logger.info("initPrototypeId: id=" + id);
+		logger.debug("initPrototypeId: id=" + id);
 		
 		if ( id == ID_constructor ) {
 			this.initPrototypeMethod(RSP_TAG, id, "constructor", 0);
@@ -105,35 +105,29 @@ public class ScriptResponse extends IdScriptableObject {
 		} else if ( "data".equals(name) ) {
 			id = ID_data;
 		}
-		logger.info("findInstanceIdInfo: name=" + name + ", id=" + id);
+		logger.debug("findInstanceIdInfo: name=" + name + ", id=" + id);
 		return id;
 	}
 	
 	@Override
 	protected int findPrototypeId(String name) {
-		logger.info("findPrototypeId: name=" + name);
+		logger.debug("findPrototypeId: name=" + name);
 		int id = 0;
 		if ( "constructor".equals(name) ) {
 			id = ID_constructor;
-		} /*else if ( "status".equals(name) ) {
-			id = ID_status;
-		} else if ( "contentType".equals(name) ) {
-			id = ID_contentType;
-		} else if ( "data".equals(name) ) {
-			id = ID_data;
-		} */
+		}
 		return id;
 	}
 	
 	@Override
 	public Object[] getIds() {
-		logger.info("getIds");
+		logger.debug("getIds");
 		return new String[] { "status", "contentType", "data" };
 	}
 	
 	@Override
 	protected Object getInstanceIdValue(int id) {
-		logger.info("getInstanceIdValue: id=" + id);
+		logger.debug("getInstanceIdValue: id=" + id);
 		Object result;
 		switch ( id ) {
 			case ID_status:
@@ -154,10 +148,10 @@ public class ScriptResponse extends IdScriptableObject {
 	
 	@Override
 	protected void setInstanceIdValue(int id, Object value) {
-		logger.info("setInstanceIdValue: id=" + id + ", value=" + value);
+		logger.debug("setInstanceIdValue: id=" + id + ", value=" + value);
 		
 		if ( value == NOT_FOUND ) {
-			logger.info("delete property: id=" + id);
+			logger.debug("delete property: id=" + id);
 			return;
 		}
 		switch ( id ) {
@@ -178,7 +172,7 @@ public class ScriptResponse extends IdScriptableObject {
 	@Override
 	public Object execIdCall(IdFunctionObject func, Context ctx, Scriptable scope, Scriptable thisObj, Object[] args) {
 		int id = func.methodId();
-		logger.info("execIdCall: id=" + id + ", this=" + thisObj);
+		logger.debug("execIdCall: id=" + id + ", this=" + thisObj);
 		
 		if ( !func.hasTag(RSP_TAG) ) {
 			return super.execIdCall(func, ctx, scope, thisObj, args);
