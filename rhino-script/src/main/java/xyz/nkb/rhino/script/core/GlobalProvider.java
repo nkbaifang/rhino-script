@@ -99,8 +99,9 @@ public class GlobalProvider extends ScriptBaseObject {
 	}
 	
 	@JSGetter("system")
-	public Object _system(ScriptableObject obj) {
-		return new java.util.HashMap();
+	public Object _system(ScriptableObject scope) {
+	//	return new java.util.HashMap();
+		return Context.javaToJS(system, scope);
 	}
 
 	@Override
