@@ -1,11 +1,9 @@
 package xyz.nkb.rhino.script.core;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,56 +28,59 @@ public class ModuleEnvironment {
 
 	private final Logger logger = LogManager.getLogger(this.getClass());
 
-	private final URL base;
-	private final Scriptable scope;
-	private final Require require;
-	private final ModuleScriptProvider scriptProvider;
+	private final URI base;
 	private final GlobalProvider global;
-	
-	private final Map<String, Scriptable> moduleMap = new HashMap<String, Scriptable>();
+	private RequireBuilder builder;
 
-	public ModuleEnvironment(URL moduleBaseURL) {
-		this.base = moduleBaseURL;
+	public ModuleEnvironment(URI base) {
+		this.base = base;
 
 		Context ctx = Context.enter();
 		try {
 			global = new GlobalProvider(ctx);
-			scope = global.getScope();
-			List<URI> paths = Arrays.asList(base.toURI());
-			ModuleSourceProvider sourceProvider = new UrlModuleSourceProvider(paths, null);
-			scriptProvider = new SoftCachingModuleScriptProvider(sourceProvider);
-		
-			require = new RequireBuilder().setModuleScriptProvider(scriptProvider)
-					.setSandboxed(true)
-					.createRequire(ctx, scope);
-			require.install(scope);
-			
-		} catch ( Exception ex ) {
-			throw new RuntimeException(ex);
+			initScriptSource();
 		} finally {
 			Context.exit();
 		}
 	}
 	
-	private synchronized Scriptable getModuleObject(Context ctx, String name) throws Exception {
-		Scriptable obj = moduleMap.get(name);
-	//	if ( obj == null ) {
-			Object[] args = { name };
-			Object o = require.call(ctx, scope, scope, args);
-			if ( o instanceof Scriptable ) {
-				obj = (Scriptable) o;
-			} else {
-				logger.warn("Unrecognized module: " + o);
-			}
-			moduleMap.put(name, obj);
-	//	}
-		return obj;
+	private synchronized void initScriptSource() {
+		List<URI> paths = Arrays.asList(base);
+		ModuleSourceProvider sourceProvider = new UrlModuleSourceProvider(paths, null);
+		ModuleScriptProvider scriptProvider = new SoftCachingModuleScriptProvider(sourceProvider);
+		builder = new RequireBuilder().setModuleScriptProvider(scriptProvider).setSandboxed(true);
+	}
+	
+	private synchronized Require createRequireFunction(Context ctx) {
+		Require require = builder.createRequire(ctx, global.getScope());
+		return require;
+	}
+	
+	public void reload() {
+		initScriptSource();
+	}
+	
+	private Scriptable getModuleObject(Context ctx, String name) throws Exception {
+		Scriptable scope = global.getScope();
+		
+		Require require = createRequireFunction(ctx);
+
+		Scriptable result = null;
+		Object[] args = { name };
+		Object o = require.call(ctx, scope, scope, args);
+		if ( o instanceof Scriptable ) {
+			result = (Scriptable) o;
+		} else {
+			logger.warn("Unrecognized module: " + o);
+		}
+		
+		return result;
 	}
 	
 	public Object invokeModule(String name, String func, Object[] args) throws Exception {
 		Context ctx = Context.enter();
-		ctx.putThreadLocal("module", name);
 		try {
+			Scriptable scope = global.getScope();
 			Scriptable obj = this.getModuleObject(ctx, name);
 			if ( obj == null && obj == Undefined.instance ) {
 				throw ScriptRuntime.notFoundError(scope, name);

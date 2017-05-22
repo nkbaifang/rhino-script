@@ -26,10 +26,7 @@ public class ScriptResponse extends IdScriptableObject {
 		ID_contentType = 3,
 		ID_data = 4,
 		MAX_ID = 4;
-	
-	private static final AtomicInteger idg = new AtomicInteger(0);
 
-	private final int _id;
 	private int status = STATUS_OK;
 	private String contentType = CONTENT_TYPE_JSON;
 	private Object data;
@@ -42,7 +39,6 @@ public class ScriptResponse extends IdScriptableObject {
 	}
 	
 	private ScriptResponse() {
-		this._id = idg.getAndIncrement();
 	}
 
 	@Override

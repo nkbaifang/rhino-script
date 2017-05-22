@@ -32,18 +32,15 @@ public class GlobalProvider extends ScriptBaseObject {
 	private void initGlobalClasses() {
 		Scriptable scope = this.getScope();
 		
-	/*	Class<? extends Scriptable>[] classes = new Class[]{
+		Class<? extends Scriptable>[] classes = new Class[]{
 			ScriptRequest.class,
-			ScriptResponse.class,
-			JSResponse.class
-		}; */
+			ScriptResponse.class
+		};
 
 		try {
-		/*	for ( Class<? extends Scriptable> c : classes ) {
+			for ( Class<? extends Scriptable> c : classes ) {
 				ScriptableObject.defineClass(scope, c, true);
-			} */
-			ScriptableObject.defineClass(scope, ScriptRequest.class, true);
-			ScriptableObject.defineClass(scope, ScriptResponse.class, true);
+			}
 		} catch ( Exception ex ) {
 			ex.printStackTrace(System.err);
 			logger.error("Failed to define global classes.", ex);
