@@ -12,7 +12,6 @@ import xyz.nkb.rhino.script.annotation.JavaScriptScope;
 import xyz.nkb.rhino.script.types.ScriptRequest;
 import xyz.nkb.rhino.script.types.ScriptResponse;
 import xyz.nkb.rhino.script.types.ScriptSystem;
-//import cn.firstsoft.firstframe.web.FirstFrameBeanFactory;
 
 @JavaScriptScope(name="Global", version = "0.9.4")
 public class GlobalProvider extends ScriptBaseObject {
@@ -55,20 +54,6 @@ public class GlobalProvider extends ScriptBaseObject {
 
 	@JavaScriptFunction( id = 2, name = "bean", arity = 1 )
 	private Object _bean(Context ctx, Scriptable scope, Object[] args) {
-	/*	String name = (String)args[0];
-		Object result = null;
-		try {
-			result = FirstFrameBeanFactory.getBean((String)args[0]);
-		} catch ( Exception ex ) {
-			logger.error("Cannot find bean: " + name, ex);
-		}
-		
-		if ( result == null ) {
-			return Undefined.instance;
-		} else {
-			result = Context.javaToJS(result, scope);
-		}
-		return result; */
 		return Context.getUndefinedValue();
 	}
 
