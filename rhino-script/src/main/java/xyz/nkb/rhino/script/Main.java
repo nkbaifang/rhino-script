@@ -22,17 +22,16 @@ public class Main {
 		
 		File dir = new File("./src/test/scripts");
 		System.out.println(dir.getAbsolutePath());
-		ModuleEnvironment env = new ModuleEnvironment(dir.toURI().toURL());
+		ModuleEnvironment env = new ModuleEnvironment(dir.toURI());
 		
-		Object data = new String[] { "13", "14" };
+		Object data = new Object[] { 13, 14 };
 		ScriptRequest sr = new ScriptRequest("POST", "application/x-www-form-urlencoded", data);
-	//	System.out.println("ScriptRequest: " + mapper.writeValueAsString(sr));
 
-		Context ctx = Context.enter();
+		Context.enter();
 		try {
 			Object o = sr;//Context.javaToJS(sr, ctx.initSafeStandardObjects());
 			
-			ScriptResponse sp = (ScriptResponse) env.invokeModule("test", "show", new Object[]{ o });
+			ScriptResponse sp = (ScriptResponse) env.invokeModule("test", "sum", new Object[]{ o });
 			String json = mapper.writeValueAsString(sp.getData());
 			System.out.println(sp.getStatus() + ": " + sp.getContentType());
 			System.out.println(json);
