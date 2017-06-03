@@ -71,12 +71,14 @@ public abstract class ScriptBaseObject extends ScriptableObject implements IdFun
 	
 	private void initProperties() {
 		
-		ScriptableObject obj = (ScriptableObject) scope;
-		
-		for ( Map.Entry<String, PropMethodPair> entry : propFuncMap.entrySet() ) {
-			PropMethodPair pair = entry.getValue();
-			if ( pair.ok() ) {
-				obj.defineProperty(pair.name, this, pair.getter, pair.setter, ScriptableObject.PERMANENT);
+		if ( scope instanceof ScriptableObject ) {
+			ScriptableObject obj = (ScriptableObject) scope;
+
+			for ( Map.Entry<String, PropMethodPair> entry : propFuncMap.entrySet() ) {
+				PropMethodPair pair = entry.getValue();
+				if ( pair.ok() ) {
+					obj.defineProperty(pair.name, this, pair.getter, pair.setter, ScriptableObject.PERMANENT);
+				}
 			}
 		}
 	}

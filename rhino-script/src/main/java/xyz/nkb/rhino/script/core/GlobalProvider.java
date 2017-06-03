@@ -26,7 +26,10 @@ public class GlobalProvider extends ScriptBaseObject {
 		
 		initGlobalClasses();
 		
-		system = new ScriptSystem(scope);
+		NewGlobal ng = new NewGlobal(scope);
+		ScriptableObject.defineProperty(scope, "ng", ng, PERMANENT | READONLY);
+		
+		system = new ScriptSystem(this);
 	}
 	
 	private void initGlobalClasses() {
@@ -67,12 +70,6 @@ public class GlobalProvider extends ScriptBaseObject {
 		logger.info(str);
 		return Undefined.instance;
 	}
-
-	@JavaScriptFunction( id = 5, name = "version", arity = 0 )
-	private Object _version(Context ctx, Scriptable scope, Object[] args) {
-		JavaScriptScope a = this.getClass().getAnnotation(JavaScriptScope.class);
-		return a.version();
-	}
 	
 	@JSGetter("version")
 	private Object _version(ScriptableObject obj) {
@@ -83,7 +80,13 @@ public class GlobalProvider extends ScriptBaseObject {
 	@JSGetter("system")
 	public Object _system(ScriptableObject scope) {
 	//	return new java.util.HashMap();
-		return Context.javaToJS(system, scope);
+	//	return Context.javaToJS(system, scope);
+		System.out.println(scope.getClass().getName());
+		System.out.println("check scope: " + (this.system == scope));
+		
+		
+		
+		return system;
 	}
 
 	@Override

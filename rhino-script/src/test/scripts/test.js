@@ -1,31 +1,33 @@
 
-var _array_sum = function(a) {
-	var self = this;
-	var _sum = 0;
-	for ( var i = 0; i < a.length; i++ ) {
-		_sum += a[i];
-	}
-	return _sum;
-};
-
 module.exports = {
 	
 	sum: function(request) {
 		var self = this;
-		
 		print('request=' + JSON.stringify(request));
 		
-		var _array = request.data || [];
-		var _sum = _array_sum(_array);
+		var _ng = ng;
+		print('ng=' + JSON.stringify(_ng));
+		_ng.data = {
+			start: 0,
+			count: 15,
+			type: 'todo'
+		};
+		print('ng=' + JSON.stringify(_ng));
+		print('version=' + version);
+		
+		
+		print('file=' + typeof _ng.file);
+		var file = _ng.file;
+		var _list = file.list('/');
+		print('files: ' + JSON.stringify(_list));
 		
 		var _rsp = new Response(200, 'application/json');
 		_rsp.data = {
 			time: new Date().getTime(),
 			func: 'show',
-			array: request.data,
-			sum: _sum
+			array: request.data
 		};
 		
 		return _rsp;
 	}
-}
+};
